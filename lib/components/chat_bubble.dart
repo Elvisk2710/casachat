@@ -21,7 +21,8 @@ class ChatBubble extends StatefulWidget {
   _ChatBubbleState createState() => _ChatBubbleState();
 }
 
-class _ChatBubbleState extends State<ChatBubble> with SingleTickerProviderStateMixin {
+class _ChatBubbleState extends State<ChatBubble>
+    with SingleTickerProviderStateMixin {
   bool isExpanded = false;
 
   @override
@@ -30,11 +31,11 @@ class _ChatBubbleState extends State<ChatBubble> with SingleTickerProviderStateM
     final alignment = isMe ? Alignment.centerRight : Alignment.centerLeft;
     final bubbleColor = isMe
         ? Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey[800]
-        : Colors.grey[400]
-        : Theme.of(context).brightness == Brightness.dark
-        ? Colors.grey[500]
-        : Colors.grey[100];
+            ? accentColor
+            : accentColor
+        : Theme.of(context).brightness == Brightness.light
+            ? secondaryColor
+            : Colors.grey[700];
 
     return GestureDetector(
       onTap: () {
@@ -66,13 +67,30 @@ class _ChatBubbleState extends State<ChatBubble> with SingleTickerProviderStateM
                     if (isExpanded) ...[
                       Text(
                         widget.sender,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: isMe
+                                ? Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black
+                                : Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? accentColor.withOpacity(0.6)
+                                    : Colors.grey[300]),
                       ),
                       SizedBox(height: 5.0),
                     ],
-                    Text(
-                      widget.text,
-                      style: TextStyle(fontSize: 16.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        widget.text,
+                        style: TextStyle(
+                          fontSize: 16.5,
+                          color: !isMe ? Colors.white : Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                     if (isExpanded) ...[
                       SizedBox(height: 5.0),
@@ -80,7 +98,9 @@ class _ChatBubbleState extends State<ChatBubble> with SingleTickerProviderStateM
                         alignment: alignment,
                         child: Text(
                           widget.time,
-                          style: TextStyle(fontSize: 13.0, color: accentColor),
+                          style: TextStyle(
+                              fontSize: 13.0,
+                              color: isMe ? Colors.black : accentColor),
                         ),
                       ),
                     ],

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Define your custom colors
 const Color accentColor = Color.fromRGBO(252, 153, 82, 1); // rgb(252, 153, 82)
 const Color secondaryColor = Color.fromRGBO(8, 8, 12, 1); // rgb(8, 8, 12)
-const Color primaryColor = Colors.white; // White color
+const Color primaryColor = Color.fromRGBO(250, 250, 250, 1); // White color
 const Color lightContainer = Color.fromRGBO(240, 240, 240, 1.0);
 // Light theme
 final ThemeData lightTheme = ThemeData(

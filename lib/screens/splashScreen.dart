@@ -40,16 +40,32 @@ class _SplashScreenState extends State<SplashScreen>
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final hasSeenIntro = prefs.getBool('hasSeenIntro') ?? false;
-    String? token = prefs.getString('jwt');
+    String? tokenLandlord = prefs.getString('jwtLandlord');
+    String? tokenStudent = prefs.getString('jwtStudent');
 
     if (hasSeenIntro) {
+      String? token;
+      if (tokenStudent != null && !JwtDecoder.isExpired(tokenStudent)) {
+        token = tokenStudent;
+      } else if (tokenLandlord != null &&
+          !JwtDecoder.isExpired(tokenLandlord)) {
+        token = tokenLandlord;
+      }
       if (token != null && !JwtDecoder.isExpired(token)) {
         // Valid token
-        String? userId = getUserIdFromToken(token, "user_id");
-        if (userId != null) {
+        String? userId = getDataFromToken(token, "user_id");
+        String? userType = getDataFromToken(token, "type");
+        String? userName = getDataFromToken(token, "firstname");
+
+        if (userId != null && userType != null && userName != null) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => LandingPage(user: userId)),
+            MaterialPageRoute(
+                builder: (context) => LandingPage(
+                      user: userId,
+                      type: userType,
+                      userName: userName,
+                    )),
           );
           return;
         }
