@@ -5,4 +5,5 @@ class Animations {
   static String chats = 'lib/assets/animations/messaging.json';
   static String start_chat = 'lib/assets/animations/start_chat.json';
   static String new_chat = 'lib/assets/animations/new_chat.json';
+  static String no_internet = 'lib/assets/animations/no_internet.json';
 }

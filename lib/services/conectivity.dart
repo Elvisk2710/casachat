@@ -1,24 +1,6 @@
-import 'dart:async';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-
-Future<bool> startMonitoringInternetConnection() {
-  // Create a Completer to handle the asynchronous operation
-  Completer<bool> completer = Completer<bool>();
-
-  // Start monitoring internet connection
-  Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> results) {
-    for (var result in results) {
-      if (result == ConnectivityResult.none) {
-        completer.complete(false);
-        // Handle actions when internet connection is lost
-      } else {
-        completer.complete(true);
-        // Handle actions when internet connection is restored
-      }
-    }
-  });
-
-  // Return the Future from the Completer
-  return completer.future;
+Future<bool> checkInternetConnection() async {
+  InternetConnectionStatus status = await InternetConnectionChecker().connectionStatus;
+  return status == InternetConnectionStatus.connected;
 }

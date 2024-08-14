@@ -1,5 +1,4 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:async';
 import 'changeNotifier.dart';
 
@@ -13,11 +12,8 @@ class SocketService {
   // Chat notifier instance
   late ChatNotifier _chatNotifier;
 
-  // Connectivity instance
-  final Connectivity _connectivity = Connectivity();
-
   // Stream subscription for connectivity changes
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  late StreamSubscription _connectivitySubscription;
 
   // Factory constructor
   factory SocketService(ChatNotifier chatNotifier) {
@@ -28,7 +24,6 @@ class SocketService {
   // Private constructor
   SocketService._internal() {
     _initializeSocket();
-    _monitorConnectivity();
   }
 
   // Getter for socket
@@ -89,20 +84,6 @@ class SocketService {
         _chatNotifier.updateChatList(data);
       }
     });
-  }
-
-  // Monitor internet connectivity
-  void _monitorConnectivity() {
-    _connectivitySubscription = _connectivity.onConnectivityChanged.cast<ConnectivityResult>().listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        print("No internet connection. Disconnecting socket...");
-        _socket.disconnect();
-      } else {
-        print("Internet connection available. Reconnecting socket...");
-        _socket.connect();
-      }
-    });
-
   }
 
   // Send a message
